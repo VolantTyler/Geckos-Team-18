@@ -28,7 +28,7 @@ import "./App.css";
 
 const StyledApp = styled.div`
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
   padding: 0;
   margin: 0;
