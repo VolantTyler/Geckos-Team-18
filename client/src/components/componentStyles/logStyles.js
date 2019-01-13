@@ -2,11 +2,11 @@ import styled from "styled-components";
 
 export const FormStyle = styled.form`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-areas:
-    "title title"
-    "time message"
-    "buttons buttons";
+    "title title title title"
+    "time-title time-time message message"
+    "buttons buttons buttons buttons";
   grid-template-rows: auto;
   grid-gap: 1.5rem;
   align-content: space-between;
