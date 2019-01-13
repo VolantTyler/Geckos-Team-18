@@ -170,7 +170,7 @@ class Log extends Component {
           </div>
           <div
             style={{
-              gridArea: "time"
+              gridArea: "time-time"
             }}>
             <h4 align="left">Duration</h4>
             <hr></hr>
