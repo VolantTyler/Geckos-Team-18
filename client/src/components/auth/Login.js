@@ -35,14 +35,15 @@ class Login extends Component {
     e.preventDefault();
     const loginCred = {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      type: "login"
     };
     this.props.loginUser(loginCred);
   };
   render() {
     const { errors, email, password } = this.state;
     return (
-      <div className="login">
+      <div className="login" style={{ height: "calc(100vh - 83px)" }}>
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">

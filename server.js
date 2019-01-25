@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const path = require("path");
+const fs = require("fs");
 
 const users = require("./routes/api/users");
 // separate logs endpoints into separate routes file and add here, along with guest views
@@ -22,9 +23,11 @@ app.use(bodyParser.json());
 // DB config
 const db = require("./config/keys");
 
+const databaseActual = process.env.MONGODB_URI || db.MONGODB_URI;
+
 // connect to MongoDB
 mongoose
-  .connect(process.env.MONGODB_URI || db.mongoURL)
+  .connect(databaseActual)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
@@ -52,5 +55,9 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const port = process.env.PORT || 5000;
+
+const tmp = path.join(process.cwd(), "tmp");
+
+if (!fs.existsSync(tmp)) fs.mkdirSync(tmp);
 
 app.listen(port, () => console.log(`Server running on port ${port}`));

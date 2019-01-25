@@ -1,10 +1,10 @@
 import { actionTypes } from "../types";
+import { clearErrors } from "./errorActions";
 import axios from "axios";
 
 // add log
 
 export const addLog = (log, history) => dispatch => {
-  clearErrors();
   axios
     .post(`/api/users/logs/add`, log)
     .then(res => {
@@ -50,16 +50,15 @@ export const editLog = (log, id, history) => dispatch => {
       });
       history.push("/dashboard");
     })
-    .catch(err =>
+    .catch(err => {
       dispatch({
         type: actionTypes.GET_ERRORS,
-        payload: err
-      })
-    );
+        payload: err.response.data
+      });
+    });
 };
 
 export const getLogs = () => dispatch => {
-  clearErrors();
   axios
     .get(`/api/users/logs`)
     .then(res => {
@@ -137,11 +136,10 @@ export const prepSend = (id, history) => dispatch => {
 };
 
 export const sendLog = (userData, logId, history) => dispatch => {
-  // clearErrors();
-  // dispatch(setBuilding());
   axios
     .post(`/api/users/logs/send/${logId}`, userData)
     .then(res => {
+      dispatch(setBuilding());
       dispatch({
         type: actionTypes.SEND_LOG,
         payload: res.data.logs
@@ -149,7 +147,6 @@ export const sendLog = (userData, logId, history) => dispatch => {
       history.push("/sent");
     })
     .catch(err => {
-      console.log(err);
       dispatch({
         type: actionTypes.GET_ERRORS,
         payload: err.response.data
@@ -172,15 +169,6 @@ export const searchLogs = query => dispatch => {
         payload: {}
       })
     );
-};
-
-// clear errors from forms
-
-export const clearErrors = () => {
-  return {
-    type: actionTypes.CLEAR_ERRORS,
-    payload: {}
-  };
 };
 
 export const setBuilding = () => {

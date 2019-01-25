@@ -13,7 +13,7 @@ const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 const validateLogInput = require("../../validation/logs");
 const validateSendInput = require("../../validation/send");
-const globalValidator = require("../../validation/globalValidator");
+const globalValidation = require("../../validation/globalValidation");
 
 const time = require("../../helpers/time");
 const { buildPDF, savePDF, emailPDF } = require("../../pdf/pdfProcessing");
@@ -33,7 +33,7 @@ const User = require("../../models/User");
 router.post("/register", (req, res) => {
   // destructuring of `req`, with the body passed to the helper function
   // in `is-empty.js`, which checks strings and objects to see if they're empty
-  const { errors, isValid } = globalValidator(req.body);
+  const { errors, isValid } = validateRegisterInput(req.body);
   // check validation
   if (!isValid) {
     return res.status(400).json(errors);
@@ -68,7 +68,7 @@ router.post("/register", (req, res) => {
             .then(user => {
               res.json(user);
             })
-            .catch(err => console.log(err));
+            .catch(err => res.status(400).json(err));
         });
       });
     }
@@ -80,7 +80,6 @@ router.post("/register", (req, res) => {
 // @access  Public
 router.post("/login", (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
-
   // check validation
   if (!isValid) {
     return res.status(400).json(errors);
@@ -127,7 +126,7 @@ router.post("/login", (req, res) => {
                 token: `Bearer ${token}`
               });
             } else {
-              res.status(401, { error: err });
+              res.status(401).json(err);
             }
           }
         );
@@ -203,9 +202,9 @@ router.post(
         user
           .save()
           .then(user => res.json(user))
-          .catch(err => res.status(406, { error: err }));
+          .catch(err => res.status(406).json(err));
       })
-      .catch(err => res.status(404, { err: err }));
+      .catch(err => res.status(404).json(err));
   }
 );
 
@@ -262,9 +261,11 @@ router.post(
         user
           .save()
           .then(user => res.json(user))
-          .catch(err => res.status(406, { error: err }));
+          .catch(err => res.status(406).json(err));
       })
-      .catch(err => res.status(404, { noLogFound: "No log found: " + err }));
+      .catch(err =>
+        res.status(404).json({ noLogFound: "No log found: " + err })
+      );
   }
 );
 
@@ -282,7 +283,7 @@ router.get(
         user
           .save()
           .then(user => res.json(user.logs))
-          .catch(err => res.status(406, { error: err }));
+          .catch(err => res.status(406).json(err));
       })
       .catch(err =>
         res.status(404).json({ noLogsFound: "No logs found", error: err })
@@ -334,7 +335,7 @@ router.delete(
               user
                 .save()
                 .then(user => res.json(user.logs))
-                .catch(err => res.status(406, { error: err }));
+                .catch(err => res.status(406).json(err));
             }
           });
         }
@@ -379,10 +380,10 @@ router.post(
                             );
                         }
                       })
-                      .catch(err => console.log(err));
+                      .catch(err => res.status(400).json(err));
                   });
                 })
-                .catch(err => res.status(400, { error: err }));
+                .catch(err => res.status(400).json(err));
             }
           });
         }
