@@ -4,6 +4,15 @@ import { StyledNavButton } from "../componentStyles/navStyles";
 
 export const NavAuthLinks = ({ name, handleLogoutClick, handleRedirect }) => (
   <ul className="navbar-nav ml-auto">
+      <li className="nav-item">
+      <Link
+        style={{ cursor: "pointer" }}
+        className="nav-link"
+        to="/dashboard"
+        onClick={() => handleRedirect(null)}>
+        Dashboard
+      </Link>
+    </li>
     <li className="nav-item">
       <Link
         style={{ cursor: "pointer" }}
