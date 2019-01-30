@@ -27,16 +27,16 @@ class Dashboard extends Component {
         <div className="text-center h1 my-4">ShiftJogger</div>
         <StyledDashboard>
           <div className="upper-left">
-            <Greetings name={user.name} />
-          </div>
-          <div className="upper-right">
             <DraftsInsights unsent={unsent} />
           </div>
-          <div className="lower-right">
+          <div className="upper-right">
             <SentInsights sent={sent} />
           </div>
-          <div className="lower-left">
+          <div className="lower-right">
             <GlobalInsights />
+          </div>
+          <div className="lower-left">
+            <Greetings name={user.name} />
           </div>
         </StyledDashboard>
       </DashboardParent>
